@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ComputerVisionProcessor.h"
+#include "Helper.h"
+
 namespace ComputerVision {
 
 	using namespace System;
@@ -9,10 +12,13 @@ namespace ComputerVision {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+    ComputerVisionProcessor* processor;
+
 	public ref class CVApplicationForm : public System::Windows::Forms::Form
 	{
 	public:
         Bitmap^ image;
+
     private: System::Windows::Forms::PictureBox^  imageOutput;
     public:
 
@@ -96,14 +102,16 @@ namespace ComputerVision {
             // grayscaleToolStripMenuItem
             // 
             this->grayscaleToolStripMenuItem->Name = L"grayscaleToolStripMenuItem";
-            this->grayscaleToolStripMenuItem->Size = System::Drawing::Size(124, 22);
+            this->grayscaleToolStripMenuItem->Size = System::Drawing::Size(152, 22);
             this->grayscaleToolStripMenuItem->Text = L"Grayscale";
+            this->grayscaleToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::grayscaleToolStripMenuItem_Click);
             // 
             // cannyToolStripMenuItem
             // 
             this->cannyToolStripMenuItem->Name = L"cannyToolStripMenuItem";
-            this->cannyToolStripMenuItem->Size = System::Drawing::Size(124, 22);
+            this->cannyToolStripMenuItem->Size = System::Drawing::Size(152, 22);
             this->cannyToolStripMenuItem->Text = L"Canny";
+            this->cannyToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::cannyToolStripMenuItem_Click);
             // 
             // imageOutput
             // 
@@ -145,9 +153,16 @@ namespace ComputerVision {
             image = gcnew Bitmap(dialog->FileName);
             filename = dialog->FileName;
             //SetWindowSize();
+            processor = new ComputerVisionProcessor(SystemToStl(filename));
             imageOutput->Image = gcnew Bitmap(image);
             imageOutput->Refresh();
         }
     }
+private: System::Void grayscaleToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+    
+}
+private: System::Void cannyToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+
+}
 };
 }
