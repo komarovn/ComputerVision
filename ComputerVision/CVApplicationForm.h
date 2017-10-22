@@ -12,12 +12,17 @@ namespace ComputerVision {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-    ComputerVisionProcessor* processor;
-
 	public ref class CVApplicationForm : public System::Windows::Forms::Form
 	{
 	public:
         Bitmap^ image;
+        ComputerVisionProcessor* processor;
+
+        std::string SystemToStl(String ^s) {
+            using namespace Runtime::InteropServices;
+            const char* ptr = (const char*)(Marshal::StringToHGlobalAnsi(s)).ToPointer();
+            return std::string(ptr);
+        };
 
     private: System::Windows::Forms::PictureBox^  imageOutput;
     public:
@@ -159,7 +164,7 @@ namespace ComputerVision {
         }
     }
 private: System::Void grayscaleToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-    
+    imageOutput->Image = processor->makeGrayscale();
 }
 private: System::Void cannyToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 
