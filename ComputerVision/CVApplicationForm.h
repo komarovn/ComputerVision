@@ -167,7 +167,7 @@ private: System::Void grayscaleToolStripMenuItem_Click(System::Object^  sender, 
     imageOutput->Image = processor->makeGrayscale();
 }
 private: System::Void cannyToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-
+    imageOutput->Image = processor->makeCannyEdgeDetection();
 }
 };
 }
