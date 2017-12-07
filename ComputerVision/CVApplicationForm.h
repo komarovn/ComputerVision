@@ -16,6 +16,8 @@ namespace ComputerVision {
 	{
 	public:
         Bitmap^ image;
+    private: System::Windows::Forms::ToolStripMenuItem^  averagingFilterToolStripMenuItem;
+    public:
         ComputerVisionProcessor* processor;
 
         std::string SystemToStl(String ^s) {
@@ -64,6 +66,7 @@ namespace ComputerVision {
             this->grayscaleToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
             this->cannyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
             this->imageOutput = (gcnew System::Windows::Forms::PictureBox());
+            this->averagingFilterToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
             this->menuStrip1->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->imageOutput))->BeginInit();
             this->SuspendLayout();
@@ -96,9 +99,9 @@ namespace ComputerVision {
             // 
             // effectsToolStripMenuItem
             // 
-            this->effectsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+            this->effectsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
                 this->grayscaleToolStripMenuItem,
-                    this->cannyToolStripMenuItem
+                    this->cannyToolStripMenuItem, this->averagingFilterToolStripMenuItem
             });
             this->effectsToolStripMenuItem->Name = L"effectsToolStripMenuItem";
             this->effectsToolStripMenuItem->Size = System::Drawing::Size(54, 20);
@@ -107,14 +110,14 @@ namespace ComputerVision {
             // grayscaleToolStripMenuItem
             // 
             this->grayscaleToolStripMenuItem->Name = L"grayscaleToolStripMenuItem";
-            this->grayscaleToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+            this->grayscaleToolStripMenuItem->Size = System::Drawing::Size(157, 22);
             this->grayscaleToolStripMenuItem->Text = L"Grayscale";
             this->grayscaleToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::grayscaleToolStripMenuItem_Click);
             // 
             // cannyToolStripMenuItem
             // 
             this->cannyToolStripMenuItem->Name = L"cannyToolStripMenuItem";
-            this->cannyToolStripMenuItem->Size = System::Drawing::Size(152, 22);
+            this->cannyToolStripMenuItem->Size = System::Drawing::Size(157, 22);
             this->cannyToolStripMenuItem->Text = L"Canny";
             this->cannyToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::cannyToolStripMenuItem_Click);
             // 
@@ -125,6 +128,13 @@ namespace ComputerVision {
             this->imageOutput->Size = System::Drawing::Size(725, 435);
             this->imageOutput->TabIndex = 1;
             this->imageOutput->TabStop = false;
+            // 
+            // averagingFilterToolStripMenuItem
+            // 
+            this->averagingFilterToolStripMenuItem->Name = L"averagingFilterToolStripMenuItem";
+            this->averagingFilterToolStripMenuItem->Size = System::Drawing::Size(157, 22);
+            this->averagingFilterToolStripMenuItem->Text = L"Averaging Filter";
+            this->averagingFilterToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::averagingFilterToolStripMenuItem_Click);
             // 
             // CVApplicationForm
             // 
@@ -168,6 +178,9 @@ private: System::Void grayscaleToolStripMenuItem_Click(System::Object^  sender, 
 }
 private: System::Void cannyToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
     imageOutput->Image = processor->makeCannyEdgeDetection();
+}
+private: System::Void averagingFilterToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+        imageOutput->Image = processor->makeAveragingFilter();
 }
 };
 }
