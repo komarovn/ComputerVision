@@ -179,35 +179,39 @@ public:
         result = applyNonMaximumSuppression(result, angles, gradients);
         result = applyThresholds(result, 10, 50);
         result = checkNeighbors(result);
-        //cv::Canny(image, result, 30, 50, 3, true);
         result.copyTo(currentImage);
         return convertImageToBitmap();
     }
 
     Bitmap^ makeAveragingFilter() {
-        cv::Mat result, invertedImage, distTransformedImage;
+        cv::Mat result, invertedImage, distTransformedImage, integralImage;
         cv::threshold(currentImage, invertedImage, 0, 255, CV_THRESH_BINARY_INV);
         cv::distanceTransform(invertedImage, distTransformedImage, CV_DIST_L2, 3);
+        cv::integral(image, integralImage);
+        distTransformedImage.convertTo(distTransformedImage, CV_8U);
         image.copyTo(result);
 
         int rows = distTransformedImage.rows;
         int cols = distTransformedImage.cols;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                cv::Vec3i totalIntensity = 0;
-                int factor = (int) distTransformedImage.at<float>(i, j);
-                factor = factor + (1 - factor % 2);
-                int count = 0;
+                int factor = (int) distTransformedImage.at<uchar>(i, j);
+                if (factor % 2 != 1) {
+                    factor++;
+                }
+                int halfFactor = factor / 2;
 
-                for (int m = i - factor / 2; m < i + factor / 2 + 1; m++) {
-                    for (int n = j - factor / 2; n < j + factor / 2 + 1; n++) {
-                        if (0 <= m && m <= rows && 0 <= n && n <= cols) {
-                            totalIntensity += image.at<cv::Vec3b>(m, n);
-                            count++;
-                        }
+                while ((i  - halfFactor < 0) || (i + halfFactor + 1 > rows) ||
+                    (j - halfFactor < 0) || (j + halfFactor + 1 > cols)) {
+                    factor -= 2;
+                    halfFactor = factor / 2;
+                }
 
-                        result.at<cv::Vec3b>(i, j) = totalIntensity / count;
-                    }
+                if (factor > 0) {
+                    result.at<cv::Vec3b>(i, j) = (integralImage.at<cv::Vec3i>(i - halfFactor, j - halfFactor) -
+                        integralImage.at<cv::Vec3i>(i - halfFactor , j + halfFactor + 1) - 
+                        integralImage.at<cv::Vec3i>(i + halfFactor + 1, j - halfFactor) +
+                        integralImage.at<cv::Vec3i>(i + halfFactor + 1, j + halfFactor + 1)) / (factor * factor);
                 }
             }
         }

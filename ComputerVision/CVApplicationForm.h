@@ -65,8 +65,8 @@ namespace ComputerVision {
             this->effectsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
             this->grayscaleToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
             this->cannyToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-            this->imageOutput = (gcnew System::Windows::Forms::PictureBox());
             this->averagingFilterToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+            this->imageOutput = (gcnew System::Windows::Forms::PictureBox());
             this->menuStrip1->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->imageOutput))->BeginInit();
             this->SuspendLayout();
@@ -121,14 +121,6 @@ namespace ComputerVision {
             this->cannyToolStripMenuItem->Text = L"Canny";
             this->cannyToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::cannyToolStripMenuItem_Click);
             // 
-            // imageOutput
-            // 
-            this->imageOutput->Location = System::Drawing::Point(13, 28);
-            this->imageOutput->Name = L"imageOutput";
-            this->imageOutput->Size = System::Drawing::Size(725, 435);
-            this->imageOutput->TabIndex = 1;
-            this->imageOutput->TabStop = false;
-            // 
             // averagingFilterToolStripMenuItem
             // 
             this->averagingFilterToolStripMenuItem->Name = L"averagingFilterToolStripMenuItem";
@@ -136,11 +128,19 @@ namespace ComputerVision {
             this->averagingFilterToolStripMenuItem->Text = L"Averaging Filter";
             this->averagingFilterToolStripMenuItem->Click += gcnew System::EventHandler(this, &CVApplicationForm::averagingFilterToolStripMenuItem_Click);
             // 
+            // imageOutput
+            // 
+            this->imageOutput->Location = System::Drawing::Point(13, 28);
+            this->imageOutput->Name = L"imageOutput";
+            this->imageOutput->Size = System::Drawing::Size(725, 492);
+            this->imageOutput->TabIndex = 1;
+            this->imageOutput->TabStop = false;
+            // 
             // CVApplicationForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(750, 475);
+            this->ClientSize = System::Drawing::Size(750, 532);
             this->Controls->Add(this->imageOutput);
             this->Controls->Add(this->menuStrip1);
             this->MainMenuStrip = this->menuStrip1;
