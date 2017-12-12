@@ -153,6 +153,10 @@ private:
             }
         }
     }
+
+    float activationFunction(float value) {
+        return 1 / (exp(-value) + 1);
+    }
 public:
     ComputerVisionProcessor(std::string filepath) {
         image = cv::imread(filepath, CV_LOAD_IMAGE_COLOR);
@@ -233,5 +237,30 @@ public:
                 integralImage.at<uchar>(j, i) = value;
             }
         }
+    }
+
+    float** convolution(float*** T, float*** F, int H, int W, int D, int h, int w) {
+        float** result = new float*[H];
+        for (int i = 0; i < H; i++) {
+            result[i] = new float[W];
+        }
+
+        for (int x = 0; x < H; x++) {
+            for (int y = 0; y < W; y++) {
+                float value = 0.0f;
+
+                for (int z = 0; z < D; z++) {
+                    for (int i = max(0, x - h / 2); i < min(H, x + h / 2); i++) {
+                        for (int j = max(0, y - w / 2); j < min(W, y + w / 2); j++) {
+                            value += T[i][j][z] * F[i + h / 2][j + w / 2][z];
+                        }
+                    }
+                }
+
+                result[x][y] = activationFunction(value);
+            }
+        }
+
+        return result;
     }
 };
